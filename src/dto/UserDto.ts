@@ -1,31 +1,22 @@
 import { AutoMap } from "@automapper/classes";
-import { IsEmail, IsNotEmpty, IsPhoneNumber, IsStrongPassword } from "class-validator";
+import { IDto } from "./IDto";
 
-export class UserPostDto{
+export class UserPostDto implements IDto{
     @AutoMap()
-    @IsNotEmpty()
     username : string;
 
     @AutoMap()
-    @IsNotEmpty()
-    @IsEmail()
     email : string;
 
-    @IsNotEmpty()
-    @IsStrongPassword()
     @AutoMap()
     password : string;
 
-    @IsNotEmpty()
     @AutoMap()
     firstName : string;
 
-    @IsNotEmpty()
     @AutoMap()
     lastName : string;
 
-    @IsNotEmpty()
-    @IsPhoneNumber()
     @AutoMap()
     phoneNumber : string;
 }

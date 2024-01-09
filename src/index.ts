@@ -54,7 +54,7 @@ AppDataSource.initialize().then(async () => {
         next();
     });
     
-
+    
     // setup express app here
    app.use(errorHandler);
    app.use((req, res, next) => {
@@ -63,7 +63,6 @@ AppDataSource.initialize().then(async () => {
 });
 
 
-    
 
     // start express server
     app.listen(3000)

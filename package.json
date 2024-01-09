@@ -13,8 +13,8 @@
       "@automapper/core": "^8.7.7",
       "body-parser": "^1.19.1",
       "class-mapper": "^0.2.3",
-      "class-validator": "^0.14.0",
       "express": "^4.17.2",
+      "joi": "^17.11.0",
       "mssql": "^9.1.1",
       "reflect-metadata": "^0.1.14",
       "typeorm": "0.3.19"

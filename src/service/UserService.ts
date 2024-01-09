@@ -2,9 +2,13 @@ import { AppDataSource } from "../data-source";
 import { UserGetDto, UserPostDto } from "../dto/UserDto";
 import { User } from "../entity/User";
 import { mapper } from "../mapping/mapper";
+import { validateObject } from "../middleware/validation";
 import { ApiResponse } from "../utility/ApiResponse";
+
 import { BadRequestError } from "../utility/badRequestError";
+import { InvalidFormatError } from "../utility/InvalidFormatError";
 import { NotFoundError } from "../utility/NotFoundError";
+import { validateUser } from "../validationScheme/UserScheme";
 
 export class UserService{
     private userRepository = AppDataSource.getRepository(User);
@@ -33,6 +37,12 @@ export class UserService{
         if(dto == null){
             throw new BadRequestError("dto is not full");
         }
+
+        
+    
+       validateUser(dto);
+      
+
         const user = mapper.map(dto, UserPostDto, User);
       
         const newUser = await this.userRepository.save(user)

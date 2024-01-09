@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { AppDataSource } from "../data-source";
+import { UserPostDto } from "../dto/UserDto";
 import { User } from "../entity/User"
 import { UserService } from "../service/UserService"
 import { BadRequestError } from "../utility/badRequestError";
@@ -19,7 +20,7 @@ export class UserController {
     }
 
     async save(request: Request, response: Response, next: NextFunction){
-        const body = request.body;
+        const body : UserPostDto = request.body;
 
         return this.userService.save(body);
     }

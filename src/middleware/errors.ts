@@ -20,6 +20,9 @@ export const errorHandler =(err: any, req: Request, res: Response, next: NextFun
         case "NotFoundError":
             statusCode = 404;
             break;
+            case "InvalidFormatError":
+                statusCode = 401;
+                break;
         default:
             statusCode = 500;
             break;
