@@ -1,18 +1,32 @@
 import { NextFunction, Request, Response } from "express"
 import { ApiResponse } from "../utility/ApiResponse";
+import { BadRequestError } from "../utility/badRequestError";
 
 
 
 export const errorHandler =(err: any, req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack); // Hata detayını loglayabilirsiniz.
 
+    let statusCode : number;
+
     // Özel veya genel hata mesajınız
     const errorMessages = [err.message || "Internal Server Error"];
 
-    // ApiResponse sınıfını kullanarak hata yanıtını döndürün
-    res.status(err.statusCode || 500).send(ApiResponse.Fail(err.statusCode || 500, errorMessages));
 
-    next();
+    switch (err.name) {
+        case "BadRequestError":
+            statusCode = 400;
+            break;
+        case "NotFoundError":
+            statusCode = 404;
+            break;
+        default:
+            statusCode = 500;
+            break;
+    }
+
+    // ApiResponse sınıfını kullanarak hata yanıtını döndürün
+    res.status(statusCode).send(ApiResponse.Fail(statusCode, errorMessages));
 };
 
 

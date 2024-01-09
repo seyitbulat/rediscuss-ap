@@ -17,28 +17,51 @@ AppDataSource.initialize().then(async () => {
     app.use(bodyParser.json())
     Profiles.StartProfiles();
 
-    // app.use((err, req, res, next) => {
-    //     console.error(err.stack)
-    //     res.status(500).send('Something broke!')
-    //     next();
-    //   })
-
 
     // register express routes from defined application routes
-    Routes.forEach(route => {
-        (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-            const result = (new (route.controller as any))[route.action](req, res, next)
-            if (result instanceof Promise) {
-                result.then(result => result !== null && result !== undefined ? res.send(result) : undefined)
+    // Routes.forEach(route => {
+    //     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
+    //         const result = (new (route.controller as any))[route.action](req, res, next)
+    //         if (result instanceof Promise) {
+    //             result.then(result => result !== null && result !== undefined ? res.send(result) : undefined)
 
-            } else if (result !== null && result !== undefined) {
-                res.json(result)
+    //         } else if (result !== null && result !== undefined) {
+    //             res.json(result)
+    //         }
+    //     })
+    // })
+
+
+    function routeHandler(route: any) {
+        return async (req: Request, res: Response, next: Function) => {
+            try {
+                const result = await (new (route.controller as any))[route.action](req, res, next);
+                if (result !== null && result !== undefined) {
+                    res.send(result);
+                }
+            } catch (error) {
+                next(error); // Hataları global error handler'a iletiyoruz
             }
-        })
-    })
+        };
+    }
+
+    Routes.forEach(route => {
+        app[route.method](route.route, routeHandler(route));
+    });
+
+    app.use((req, res, next) => {
+        console.log("Router  çalıştı");
+        next();
+    });
+    
 
     // setup express app here
-   
+   app.use(errorHandler);
+   app.use((req, res, next) => {
+    console.log("Error handling çalıştı");
+    next();
+});
+
 
     
 
@@ -48,4 +71,4 @@ AppDataSource.initialize().then(async () => {
 
     console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results")
 
-}).catch(error => console.log(error))
+});
