@@ -1,4 +1,4 @@
-# Awesome Project Build with TypeORM
+# A backend for reddit like web application
 
 Steps to run this project:
 
